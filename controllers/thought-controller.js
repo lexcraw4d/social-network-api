@@ -36,25 +36,25 @@ const thoughtController = {
     //create thought
     createThought({ params, body }, res) {
         Thought.create(body)
-            .then(({ _id}) => {
-                return User.findOneAndUpdate(
-                    { username: body.username },
-                    { $push: { thoughts: _id } },
-                    { new: true }
-                );
-            })
-            .then(dbUserData => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: 'No user found with this username!'});
-                    return;
-                }
-                res.json(dbUserData);
-            })
-            .catch(err => res.json(err));
-    },
+          .then(({ _id }) => {
+            return User.findOneAndUpdate(
+              { _id: params.userId },
+              { $push: { thoughts: _id } },
+              { new: true }
+            );
+          })
+          .then((dbThoughtData) => {
+            if (!dbThoughtData) {
+              res.status(400).json({ message: "No thought found with this id!" });
+              return;
+            }
+            res.json(dbThoughtData);
+          })
+          .catch((err) => res.json(err));
+      },
 
     //add reaction
-    addReaction ({ params, body}, res) {
+    createReaction ({ params, body}, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
             { $push: { reactions: body } },
@@ -62,7 +62,7 @@ const thoughtController = {
         )
         .then(dbThoughtData => {
             if (!dbThoughtData) {
-                res.status(404).json({ message: 'No thought with this ID!' });
+                res.status(404).json({ message: 'No thought with this id!' });
                 return;
             }
             res.json(dbThoughtData)
