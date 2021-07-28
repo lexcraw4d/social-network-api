@@ -1,5 +1,5 @@
 const { Schema, model} = require('mongoose');
-
+const dateFormat = require('../utils/dateFormat');
 
 const UserSchema = new Schema (
 
@@ -17,11 +17,7 @@ const UserSchema = new Schema (
             unique: true,
             required: [true, 'Email required!'],
             required: 'Email address is required',
-            // validate: [validateEmail, 'Please fill a valid email address'],
-            // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
         },
-
-        
 
         thoughts: [
             {
@@ -29,10 +25,11 @@ const UserSchema = new Schema (
               ref: 'Thought'
             }
           ],
-        reaction: [
+          
+        friends: [
             {
               type: Schema.Types.ObjectId,
-              ref: 'Reaction'
+              ref: 'User'
             }
           ],
     
@@ -47,10 +44,9 @@ const UserSchema = new Schema (
         }
      );
     
-    UserSchema.virtual('reactionCount').get(function(){return this.reaction.length}
-    //look into specs
-    
-    )
+UserSchema.virtual('reactionCount').get(function(){
+  return this.friends.length
+})
     
 
 const User = model ('User', UserSchema)
