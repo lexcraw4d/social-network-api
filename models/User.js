@@ -9,7 +9,6 @@ const UserSchema = new Schema (
             unique: true,
             required: [true, 'Username required!'],
             trim: true
-
         },
 
         email: {
@@ -20,24 +19,24 @@ const UserSchema = new Schema (
         },
 
         thoughts: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'Thought'
-            }
-          ],
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Thought'
+          }
+        ],
+        //THOUGHTS: [ '8sd8d7sd67s67', '8as86d5a4d7s5da7d' ]
           
         friends: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'User'
-            }
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+          }
           ],
     
         },
         {
           toJSON: {
             virtuals: true,
-            getters: true
           },
           // prevents virtuals from creating duplicate of _id as `id`
           id: false
